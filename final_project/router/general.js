@@ -8,12 +8,11 @@ let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
 /* =========================
-   TASKS 1–6 (EXPRESS ROUTES)
+   TASK 1–6: EXPRESS ROUTES
 ========================= */
 
 // Register user
 public_users.post("/register", (req, res) => {
-
   const username = req.body.username;
   const password = req.body.password;
 
@@ -94,7 +93,7 @@ public_users.get('/review/:isbn', (req, res) => {
 });
 
 /* =========================
-   TASK 10 — GET ALL BOOKS (ASYNC)
+   TASK 10: GET ALL BOOKS (AXIOS)
 ========================= */
 
 async function getAllBooksAsync() {
@@ -108,7 +107,7 @@ async function getAllBooksAsync() {
 }
 
 /* =========================
-   TASK 11 — GET BY ISBN (ASYNC)
+   TASK 11: GET BY ISBN (AXIOS)
 ========================= */
 
 async function getBookByISBNAsync(isbn) {
@@ -122,7 +121,7 @@ async function getBookByISBNAsync(isbn) {
 }
 
 /* =========================
-   TASK 12 — GET BY AUTHOR (ASYNC)
+   TASK 12: GET BY AUTHOR (AXIOS)
 ========================= */
 
 async function getBooksByAuthorAsync(author) {
@@ -136,11 +135,26 @@ async function getBooksByAuthorAsync(author) {
 }
 
 /* =========================
+   TASK 13: GET BY TITLE (AXIOS)
+========================= */
+
+async function getBooksByTitleAsync(title) {
+  try {
+    const response = await axios.get(`http://localhost:5000/title/${title}`);
+    console.log("TASK 13 OUTPUT:");
+    console.log(response.data);
+  } catch (err) {
+    console.log(err.message);
+  }
+}
+
+/* =========================
    TEST CALLS (UNCOMMENT TO RUN)
 ========================= */
 
 // getAllBooksAsync();
 // getBookByISBNAsync("1");
 // getBooksByAuthorAsync("Chinua Achebe");
+// getBooksByTitleAsync("Things Fall Apart");
 
 module.exports.general = public_users;
