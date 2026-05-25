@@ -8,42 +8,35 @@ let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
 /* =========================
-   TASKS 1–6 (UNCHANGED)
+   TASKS 1–6 (EXPRESS ROUTES)
 ========================= */
 
-// Register a new user
+// Register user
 public_users.post("/register", (req, res) => {
 
   const username = req.body.username;
   const password = req.body.password;
 
   if (!username || !password) {
-    return res.status(400).json({
-      message: "Username and password are required"
-    });
+    return res.status(400).json({ message: "Username and password are required" });
   }
 
-  if (users.find(user => user.username === username)) {
-    return res.status(400).json({
-      message: "User already exists"
-    });
+  if (users.find(u => u.username === username)) {
+    return res.status(400).json({ message: "User already exists" });
   }
 
   users.push({ username, password });
 
-  return res.status(200).json({
-    message: "User registered successfully"
-  });
+  return res.status(200).json({ message: "User registered successfully" });
 });
 
 // Get all books
-public_users.get('/', function (req, res) {
+public_users.get('/', (req, res) => {
   return res.status(200).send(JSON.stringify(books, null, 4));
 });
 
-// Get book by ISBN
-public_users.get('/isbn/:isbn', function (req, res) {
-
+// Get by ISBN
+public_users.get('/isbn/:isbn', (req, res) => {
   let isbn = req.params.isbn;
 
   if (books[isbn]) {
@@ -53,9 +46,8 @@ public_users.get('/isbn/:isbn', function (req, res) {
   return res.status(404).json({ message: "Book not found" });
 });
 
-// Get books by author
-public_users.get('/author/:author', function (req, res) {
-
+// Get by author
+public_users.get('/author/:author', (req, res) => {
   let author = req.params.author;
   let result = {};
 
@@ -72,9 +64,8 @@ public_users.get('/author/:author', function (req, res) {
   return res.status(404).json({ message: "No books found for this author" });
 });
 
-// Get books by title
-public_users.get('/title/:title', function (req, res) {
-
+// Get by title
+public_users.get('/title/:title', (req, res) => {
   let title = req.params.title;
   let result = {};
 
@@ -91,9 +82,8 @@ public_users.get('/title/:title', function (req, res) {
   return res.status(404).json({ message: "No books found for this title" });
 });
 
-// Get book reviews
-public_users.get('/review/:isbn', function (req, res) {
-
+// Get reviews
+public_users.get('/review/:isbn', (req, res) => {
   let isbn = req.params.isbn;
 
   if (books[isbn]) {
@@ -104,7 +94,7 @@ public_users.get('/review/:isbn', function (req, res) {
 });
 
 /* =========================
-   TASK 10 - GET ALL BOOKS (AXIOS + ASYNC)
+   TASK 10 — GET ALL BOOKS (ASYNC)
 ========================= */
 
 async function getAllBooksAsync() {
@@ -112,13 +102,13 @@ async function getAllBooksAsync() {
     const response = await axios.get('http://localhost:5000/');
     console.log("TASK 10 OUTPUT:");
     console.log(response.data);
-  } catch (error) {
-    console.log("Error:", error.message);
+  } catch (err) {
+    console.log(err.message);
   }
 }
 
 /* =========================
-   TASK 11 - GET BOOK BY ISBN (AXIOS + ASYNC)
+   TASK 11 — GET BY ISBN (ASYNC)
 ========================= */
 
 async function getBookByISBNAsync(isbn) {
@@ -126,16 +116,31 @@ async function getBookByISBNAsync(isbn) {
     const response = await axios.get(`http://localhost:5000/isbn/${isbn}`);
     console.log("TASK 11 OUTPUT:");
     console.log(response.data);
-  } catch (error) {
-    console.log("Error:", error.message);
+  } catch (err) {
+    console.log(err.message);
   }
 }
 
 /* =========================
-   TEST FUNCTIONS (UNCOMMENT TO RUN)
+   TASK 12 — GET BY AUTHOR (ASYNC)
+========================= */
+
+async function getBooksByAuthorAsync(author) {
+  try {
+    const response = await axios.get(`http://localhost:5000/author/${author}`);
+    console.log("TASK 12 OUTPUT:");
+    console.log(response.data);
+  } catch (err) {
+    console.log(err.message);
+  }
+}
+
+/* =========================
+   TEST CALLS (UNCOMMENT TO RUN)
 ========================= */
 
 // getAllBooksAsync();
 // getBookByISBNAsync("1");
+// getBooksByAuthorAsync("Chinua Achebe");
 
 module.exports.general = public_users;
