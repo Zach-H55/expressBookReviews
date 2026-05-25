@@ -104,7 +104,7 @@ public_users.get('/review/:isbn', function (req, res) {
 });
 
 /* =========================
-   TASK 10 ONLY (ASYNC/AWAIT + AXIOS)
+   TASK 10 - GET ALL BOOKS (AXIOS + ASYNC)
 ========================= */
 
 async function getAllBooksAsync() {
@@ -117,7 +117,25 @@ async function getAllBooksAsync() {
   }
 }
 
-// Run Task 10 test (uncomment when needed)
+/* =========================
+   TASK 11 - GET BOOK BY ISBN (AXIOS + ASYNC)
+========================= */
+
+async function getBookByISBNAsync(isbn) {
+  try {
+    const response = await axios.get(`http://localhost:5000/isbn/${isbn}`);
+    console.log("TASK 11 OUTPUT:");
+    console.log(response.data);
+  } catch (error) {
+    console.log("Error:", error.message);
+  }
+}
+
+/* =========================
+   TEST FUNCTIONS (UNCOMMENT TO RUN)
+========================= */
+
 // getAllBooksAsync();
+// getBookByISBNAsync("1");
 
 module.exports.general = public_users;
